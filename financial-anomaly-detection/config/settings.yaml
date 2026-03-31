@@ -1,0 +1,45 @@
+# config/settings.yaml
+# ──────────────────────────────────────────────────────────────
+# All tunable parameters for the anomaly detection pipeline.
+# Edit here rather than in source code.
+# ──────────────────────────────────────────────────────────────
+
+data:
+  n_accounts: 80
+  days: 180
+  anomaly_ratio: 0.04
+  seed: 42
+
+detector:
+  contamination: 0.05        # Expected fraction of anomalies
+  score_threshold: 0.45      # Ensemble score cutoff [0–1]
+  isolation_forest:
+    n_estimators: 200
+    max_samples: auto
+  lof:
+    n_neighbors: 20
+  autoencoder_proxy:
+    n_components: 10
+    threshold_quantile: 0.95
+  zscore:
+    threshold: 3.0
+  weights:
+    zscore: 0.10
+    iqr: 0.10
+    iso_forest: 0.35
+    autoencoder: 0.25
+    lof: 0.20
+
+paths:
+  raw_data: data/raw/transactions.csv
+  processed_data: data/processed/results.csv
+  saved_model: models/saved/ensemble_detector.pkl
+  html_report: reports/html/report.html
+  metrics_json: reports/metrics.json
+
+compliance:
+  large_transaction_threshold: 10000   # GBP
+  velocity_1h_threshold: 5
+  velocity_24h_threshold: 20
+  amount_velocity_1h_threshold: 5000   # GBP
+  round_amount_threshold: 500          # flag multiples of this
